@@ -19,6 +19,34 @@ body {
     align-items: center;
     font-family: var(--font-body);
     color: var(--text-main);
+    -webkit-text-size-adjust: none; /* Disables iPhone's auto-resizing */
+    text-size-adjust: none;
+}
+
+h1, h2, h3, p, li, span {
+    max-height: 999999px; /* This is a 'hack' that forces iOS to stop resizing text */
+,}
+
+/* Add this at the top of your CSS */
+html, body {
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling on mobile */
+    -webkit-text-size-adjust: 100%; /* Fixes weird iPhone font resizing */
+}
+
+/* Mobile-Specific Preview Adjustment */
+@media screen and (max-width: 210mm) {
+    #resume-content {
+        width: 95vw !important; /* Switch to viewport width on small screens */
+        height: auto !important; /* Let it flow naturally on mobile */
+        padding: 5mm !important; /* Smaller padding for mobile viewing */
+        margin: 10px auto;
+        transform: none !important;
+    }
+
+    body {
+        padding: 10px 0;
+    }
 }
 
 /* --- THE UI --- */
@@ -35,6 +63,8 @@ body {
     z-index: 100;
     font-family: var(--font-header);
     font-weight: bold;
+    -webkit-appearance: none; /* Removes default iOS button styling */
+    appearance: none;
 }
 
 /* --- THE PAGE --- */
