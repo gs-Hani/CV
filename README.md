@@ -1,2 +1,2 @@
 # CV
-My CV and Portfolio and a web and PDF friendly format
+My CV and Portfolio in a web and PDF friendly format

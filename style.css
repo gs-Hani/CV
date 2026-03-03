@@ -1,0 +1,196 @@
+:root {
+    --bg-surface: #f0f2f5;
+    --page-bg: #ffffff;
+    --text-main: #2c3e50;
+    --accent: #3498db;
+    --border-color: #e0e0e0;
+    --page-width: 210mm;
+    --page-height: 297mm;
+    --font-header: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-body: 'Charter', 'Georgia', serif;
+}
+
+body {
+    background-color: var(--bg-surface);
+    margin: 0;
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-body);
+    color: var(--text-main);
+}
+
+/* --- THE UI --- */
+.no-print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+    font-family: var(--font-header);
+    font-weight: bold;
+}
+
+/* --- THE PAGE --- */
+#resume-content {
+    background: var(--page-bg);
+    width: var(--page-width);
+    min-height: var(--page-height);
+    /* MATCH THIS TO PRINT PADDING */
+    padding: 12mm 18mm; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Red Line Logic */
+body:not(.portfolio-mode) #resume-content {
+    background-image: linear-gradient(to bottom, transparent 296mm, #eb4d4b 296mm, #eb4d4b 297mm);
+    background-size: 100% 297mm;
+}
+
+body.portfolio-mode #resume-content {
+    background-image: none !important;
+}
+
+/* --- TYPOGRAPHY & HEADER --- */
+.cv-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 10px;
+}
+
+h1 {
+    flex: 0 1 auto;
+    font-family: var(--font-header);
+    font-size: 22pt !important;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin: 0 !important;
+}
+
+.subtitle {
+    font-size: 10pt;
+    color: #7f8c8d;
+}
+
+#dynamic-contact {
+    flex: 1 0 100%;
+    margin-top: 5px;
+}
+
+.contact-info, .contact-line {
+    font-size: 10pt;
+    margin-top: 5px;
+}
+
+.contact-info a, .contact-line a {
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+h2 {
+    font-family: var(--font-header);
+    font-size: 18pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--text-main);
+    margin: 10px 0 10px 0;
+}
+
+h3 {
+    font-family: var(--font-header);
+    font-size: 12pt;
+    margin: 10px 0 2px 0;
+}
+
+ul { margin: 2mm 0; }
+
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 10px;
+}
+
+.date {
+    font-size: 10pt;
+    color: #7f8c8d;
+    white-space: nowrap;
+    margin-left: 15px;
+}
+
+/* --- CERTIFICATES ALIGNMENT FIX --- */
+/* Target the list items in the Certificates section specifically */
+section:nth-of-type(3) li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+
+/* Ensure the date in certificates is right-aligned and doesn't wrap */
+section:nth-of-type(3) .date {
+    margin-left: 20px;
+    white-space: nowrap;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* --- INTERACTION --- */
+[data-i]:not(.portfolio-mode [data-i]):hover {
+    background-color: rgba(52, 152, 219, 0.08);
+    outline: 1px dashed var(--accent);
+}
+
+.hidden { display: none !important; }
+
+/* --- PRINT ENGINE --- */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0 !important; 
+    }
+
+    body {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white;
+        display: block !important;
+    }
+
+    #resume-content {
+        width: 210mm !important;
+        height: 297mm !important;
+        /* MUST MATCH SCREEN PADDING EXACTLY */
+        padding: 12mm 18mm !important; 
+        box-shadow: none !important;
+        border: none !important;
+        box-sizing: border-box !important;
+        transform: scale(1);
+        transform-origin: top left;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Print Visibility for Links */
+    #dynamic-contact a, .contact-line a {
+        color: #000 !important;
+        text-decoration: none !important;
+        visibility: visible !important;
+        display: inline !important;
+    }
+
+    .no-print, .no-print-btn, .no-print-msg { 
+        display: none !important; 
+    }
+}
