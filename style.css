@@ -59,6 +59,17 @@ body.portfolio-mode #resume-content {
     background-image: none !important;
 }
 
+/* Only hide the privacy message if the body has a specific class */
+/* We will trigger this class via JavaScript once decoding is done */
+body.contacts-loaded .no-print-msg {
+    display: none !important;
+}
+
+/* Optional: Keep the separators hidden until loaded */
+.sep.hidden {
+    display: none;
+}
+
 /* --- TYPOGRAPHY & HEADER --- */
 .cv-header {
     display: flex;

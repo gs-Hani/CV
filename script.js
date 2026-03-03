@@ -2,9 +2,14 @@ const MY_LINKEDIN = "https://www.linkedin.com/in/hani-alazzawi";
 const BITMASK_LENGTH = 64;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Handle Footer Date
     const dateEl = document.getElementById('footer-date');
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    dateEl.innerText = `Last updated: ${new Date().toLocaleDateString(undefined, options)}`;
+    if (dateEl) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.innerText = `Last updated: ${new Date().toLocaleDateString(undefined, options)}`;
+    }
+
+    // 2. Parse URL Hash
     const hash = decodeURIComponent(window.location.hash.substring(1));
     const params = new URLSearchParams(hash);
     
@@ -18,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = params.get('e');
     const contactDiv = document.getElementById('dynamic-contact');
 
+    // Portfolio Mode is active if real contact info is provided
     const isPortfolioMode = (phone && phone !== '?') || (email && email !== '?');
 
     if (isPortfolioMode) {
@@ -32,9 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderPortfolioMode(container, phone, email, code) {
     if (code) applyBitmask(code);
 
-    // Hide the "Contact hidden" placeholder text
-    const placeholder = container.querySelector('.no-print');
-    if (placeholder) placeholder.style.display = 'none';
+    // Trigger CSS to hide the privacy message and show fields
+    document.body.classList.add('contacts-loaded');
 
     const emailEl = document.getElementById('contact-email');
     const phoneEl = document.getElementById('contact-phone');
@@ -42,22 +47,26 @@ function renderPortfolioMode(container, phone, email, code) {
     const sep1 = document.getElementById('contact-sep-1');
     const sep2 = document.getElementById('contact-sep-2');
 
+    // Set Email
     if (email && email !== '?') {
         emailEl.href = `mailto:${email}`;
         emailEl.innerText = email;
-        sep1.classList.remove('hidden');
+        if (sep1) sep1.classList.remove('hidden');
     }
 
+    // Set Phone
     if (phone && phone !== '?') {
         phoneEl.innerText = phone;
-        sep2.classList.remove('hidden');
+        if (sep2) sep2.classList.remove('hidden');
     }
 
-    if (MY_LINKEDIN) {
+    // Set LinkedIn
+    if (linkedinEl && MY_LINKEDIN) {
         linkedinEl.href = MY_LINKEDIN;
         linkedinEl.innerText = MY_LINKEDIN.replace(/^https?:\/\//, '');
     }
 
+    // Disable editor clicks in portfolio mode
     document.querySelectorAll('[data-i]').forEach(el => {
         el.style.pointerEvents = 'none';
         el.style.cursor = 'default';
@@ -66,6 +75,7 @@ function renderPortfolioMode(container, phone, email, code) {
 
 function initializeEditorMode(params, code) {
     if (code) applyBitmask(code);
+    
     document.querySelectorAll('[data-i]').forEach(el => {
         el.addEventListener('click', (e) => {
             e.stopPropagation(); 
@@ -78,24 +88,25 @@ function initializeEditorMode(params, code) {
 function updateURL(params) {
     const elements = document.querySelectorAll('[data-i]');
     let bits = new Array(BITMASK_LENGTH).fill("0");
+    
     elements.forEach(el => {
         const id = parseInt(el.getAttribute('data-i'));
         if (id >= 0 && id < BITMASK_LENGTH) {
+            // If it DOES NOT have the hidden class, it's visible (1)
             bits[id] = el.classList.contains('hidden') ? "0" : "1";
         }
     });
+
     let binaryString = bits.join("");
     let hexCode = "";
     for (let i = 0; i < binaryString.length; i += 4) {
         hexCode += parseInt(binaryString.substr(i, 4), 2).toString(16);
     }
+    
     params.set('c', hexCode);
     window.location.hash = params.toString();
 }
 
-/**
- * FIXED BITMASK DECODER
- */
 function applyBitmask(hex) {
     if (!hex) return;
     let binaryString = "";
@@ -105,13 +116,14 @@ function applyBitmask(hex) {
 
     document.querySelectorAll('[data-i]').forEach((el) => {
         const id = parseInt(el.getAttribute('data-i'));
-        // Check if this bit exists and is set to 0 (hidden)
-        if (binaryString[id] === "0") {
-            el.classList.add('hidden');
-            el.setAttribute('aria-hidden', 'true');
-        } else {
-            el.classList.remove('hidden');
-            el.removeAttribute('aria-hidden');
+        if (id >= 0 && id < binaryString.length) {
+            if (binaryString[id] === "0") {
+                el.classList.add('hidden');
+                el.setAttribute('aria-hidden', 'true');
+            } else {
+                el.classList.remove('hidden');
+                el.removeAttribute('aria-hidden');
+            }
         }
     });
 }
