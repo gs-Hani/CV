@@ -12,3 +12,8 @@ My CV and Portfolio in a web and PDF friendly format
     - Updated some syntax errors in the CSS file.
     - Fixed an issue with the HTML that added margins to the site when printing via iPhone.
     - Made the CodCademy section more ATS friendly.
+1.0.2.0:
+    - Reduced the margin for h3.
+    - Added fixed dimensions for the page and removed the paddings/margins when printing via iPhone.
+    - Set the #resume-content position to absolute.
+    - Removed the place holder message for the contacts info. 
