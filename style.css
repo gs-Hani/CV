@@ -148,6 +148,23 @@ h2 {
 body.contacts-loaded .no-print-msg { display: none !important; }
 .sep.hidden { display: none; }
 
+/* --- CERTIFICATE ALIGNMENT FIX --- */
+/* Target only the list items within the Certificates section */
+section[aria-labelledby="crt-heading"] ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    gap: 15px;
+}
+
+/* Ensure the date doesn't shrink or wrap weirdly */
+section[aria-labelledby="crt-heading"] .date {
+    margin-left: auto;
+    flex-shrink: 0;
+    text-align: right;
+}
+
 /* 4. PRINT ENGINE */
 @media print {
     @page {

@@ -16,4 +16,6 @@ My CV and Portfolio in a web and PDF friendly format
     - Reduced the margin for h3.
     - Added fixed dimensions for the page and removed the paddings/margins when printing via iPhone.
     - Set the #resume-content position to absolute.
-    - Removed the place holder message for the contacts info. 
+    - Removed the place holder message for the contacts info.
+1.0.2.1:
+    - Fixed the dates alignment for the certificates section. 
