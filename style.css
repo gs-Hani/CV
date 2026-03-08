@@ -1,3 +1,8 @@
+/* 1. RESET & GLOBAL BOX MODEL */
+* {
+    box-sizing: border-box; /* Ensures padding doesn't push width outward */
+}
+
 :root {
     --bg-surface: #f0f2f5;
     --page-bg: #ffffff;
@@ -10,73 +15,65 @@
     --font-body: 'Charter', 'Georgia', serif;
 }
 
+html, body {
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    -webkit-text-size-adjust: 100%; /* Fixes iPhone text jumps */
+    text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: var(--bg-surface);
-    margin: 0;
-    padding: 40px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: var(--font-body);
     color: var(--text-main);
-    -webkit-text-size-adjust: none; /* Disables iPhone's auto-resizing */
-    text-size-adjust: none;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
+/* iOS Text Inflation Fix */
 h1, h2, h3, p, li, span {
-    max-height: 999999px; /* This is a 'hack' that forces iOS to stop resizing text */
-,}
-
-/* Add this at the top of your CSS */
-html, body {
-    width: 100%;
-    overflow-x: hidden; /* Prevent horizontal scrolling on mobile */
-    -webkit-text-size-adjust: 100%; /* Fixes weird iPhone font resizing */
+    max-height: 999999px;
 }
 
-/* Mobile-Specific Preview Adjustment */
+/* 2. MOBILE PREVIEW LOGIC */
 @media screen and (max-width: 210mm) {
     #resume-content {
-        width: 95vw !important; /* Switch to viewport width on small screens */
-        height: auto !important; /* Let it flow naturally on mobile */
-        padding: 5mm !important; /* Smaller padding for mobile viewing */
-        margin: 10px auto;
+        width: 100% !important; /* Take full width of phone */
+        max-width: 100vw;
+        height: auto !important;
+        padding: 10mm 15mm !important; /* Slightly smaller padding for mobile */
+        margin: 0 !important;
         transform: none !important;
+        box-shadow: none !important;
     }
 
     body {
-        padding: 10px 0;
+        padding: 0;
+        background-color: var(--page-bg); /* Match page to background on mobile */
+    }
+
+    .no-print-btn {
+        top: 10px;
+        right: 10px;
+        padding: 8px 15px;
+        font-size: 12px;
     }
 }
 
-/* --- THE UI --- */
-.no-print-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 100;
-    font-family: var(--font-header);
-    font-weight: bold;
-    -webkit-appearance: none; /* Removes default iOS button styling */
-    appearance: none;
-}
-
-/* --- THE PAGE --- */
+/* 3. THE PAGE STRUCTURE */
 #resume-content {
     background: var(--page-bg);
     width: var(--page-width);
     min-height: var(--page-height);
-    /* MATCH THIS TO PRINT PADDING */
     padding: 12mm 18mm; 
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    box-sizing: border-box;
     position: relative;
+    word-wrap: break-word; /* Prevents long emails from cropping the page */
 }
 
 /* Red Line Logic */
@@ -85,22 +82,7 @@ body:not(.portfolio-mode) #resume-content {
     background-size: 100% 297mm;
 }
 
-body.portfolio-mode #resume-content {
-    background-image: none !important;
-}
-
-/* Only hide the privacy message if the body has a specific class */
-/* We will trigger this class via JavaScript once decoding is done */
-body.contacts-loaded .no-print-msg {
-    display: none !important;
-}
-
-/* Optional: Keep the separators hidden until loaded */
-.sep.hidden {
-    display: none;
-}
-
-/* --- TYPOGRAPHY & HEADER --- */
+/* Header & Typography */
 .cv-header {
     display: flex;
     flex-wrap: wrap;
@@ -111,32 +93,11 @@ body.contacts-loaded .no-print-msg {
 }
 
 h1 {
-    flex: 0 1 auto;
     font-family: var(--font-header);
     font-size: 22pt !important;
     font-weight: 900;
     letter-spacing: -1px;
     margin: 0 !important;
-}
-
-.subtitle {
-    font-size: 10pt;
-    color: #7f8c8d;
-}
-
-#dynamic-contact {
-    flex: 1 0 100%;
-    margin-top: 5px;
-}
-
-.contact-info, .contact-line {
-    font-size: 10pt;
-    margin-top: 5px;
-}
-
-.contact-info a, .contact-line a {
-    text-decoration: none;
-    color: var(--text-main);
 }
 
 h2 {
@@ -145,16 +106,8 @@ h2 {
     font-weight: 700;
     text-transform: uppercase;
     border-bottom: 2px solid var(--text-main);
-    margin: 10px 0 10px 0;
+    margin: 15px 0 10px 0;
 }
-
-h3 {
-    font-family: var(--font-header);
-    font-size: 12pt;
-    margin: 10px 0 2px 0;
-}
-
-ul { margin: 2mm 0; }
 
 .experience-header {
     display: flex;
@@ -170,32 +123,28 @@ ul { margin: 2mm 0; }
     margin-left: 15px;
 }
 
-/* --- CERTIFICATES ALIGNMENT FIX --- */
-/* Target the list items in the Certificates section specifically */
-section:nth-of-type(3) li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    width: 100%;
-}
-
-/* Ensure the date in certificates is right-aligned and doesn't wrap */
-section:nth-of-type(3) .date {
-    margin-left: 20px;
-    white-space: nowrap;
-    text-align: right;
-    flex-shrink: 0;
-}
-
-/* --- INTERACTION --- */
-[data-i]:not(.portfolio-mode [data-i]):hover {
-    background-color: rgba(52, 152, 219, 0.08);
-    outline: 1px dashed var(--accent);
+/* UI Elements */
+.no-print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+    font-family: var(--font-header);
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .hidden { display: none !important; }
+body.contacts-loaded .no-print-msg { display: none !important; }
+.sep.hidden { display: none; }
 
-/* --- PRINT ENGINE --- */
+/* 4. PRINT ENGINE */
 @media print {
     @page {
         size: A4 portrait;
@@ -206,29 +155,16 @@ section:nth-of-type(3) .date {
         padding: 0 !important;
         margin: 0 !important;
         background: white;
-        display: block !important;
     }
 
     #resume-content {
         width: 210mm !important;
         height: 297mm !important;
-        /* MUST MATCH SCREEN PADDING EXACTLY */
         padding: 12mm 18mm !important; 
         box-shadow: none !important;
         border: none !important;
-        box-sizing: border-box !important;
-        transform: scale(1);
-        transform-origin: top left;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
-    }
-
-    /* Print Visibility for Links */
-    #dynamic-contact a, .contact-line a {
-        color: #000 !important;
-        text-decoration: none !important;
-        visibility: visible !important;
-        display: inline !important;
     }
 
     .no-print, .no-print-btn, .no-print-msg { 
