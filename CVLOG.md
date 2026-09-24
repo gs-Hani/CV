@@ -20,4 +20,7 @@
     - Added a log file to track updates rather than using the README file
     - Added the new position "Project architect" with "Bright line"
     - Updated the README file with the versioning system and a "how to" section 
- 
+1.1.1.0:
+    - Added a new task to "Bright line" position.
+    - Added the new "LEED" certificate.
+    - Updated the README file with better phrasing.

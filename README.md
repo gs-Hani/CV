@@ -12,6 +12,6 @@ The system follows the A.B.C.D format where:
 since I use my steam deck to develop this tool, I might as well document how to view it locally using said console.
 * Just run the following command with your socket of choice:
 > python3 -m http.server XXXX
-* Then your browser of choice write in the search bar:
+* Then in your browser of choice, write in the search bar:
 > http://localhost:XXXX
 
