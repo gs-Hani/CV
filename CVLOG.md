@@ -24,3 +24,7 @@
     - Added a new task to "Bright line" position.
     - Added the new "LEED" certificate.
     - Updated the README file with better phrasing.
+1.1.2.0:
+    - Updated job title to include LEED.
+    - Added a new sub task for "Bright line"
+    - Did some minor adjustments to "Bright line" subtasks.
